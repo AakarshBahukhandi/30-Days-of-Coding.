@@ -1,0 +1,24 @@
+Given a string s, find the length of the longest 
+substring
+ without repeating characters.
+
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # Dictionary to store the last seen position of each character
+        char_index_map = {}
+        max_length = 0
+        start = 0  # Start index of the current substring
+        
+        for i, char in enumerate(s):
+            # If the character is already in the substring, move the start index
+            if char in char_index_map and char_index_map[char] >= start:
+                start = char_index_map[char] + 1
+            
+            # Update the character's last seen index
+            char_index_map[char] = i
+            
+            # Calculate the current substring length
+            max_length = max(max_length, i - start + 1)
+        
+        return max_length
