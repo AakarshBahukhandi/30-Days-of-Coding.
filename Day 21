@@ -1,0 +1,28 @@
+Given a string s, find the length of the longest 
+substring without repeating characters.
+
+
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # Initialize a set to store characters in the current window
+        char_set = set()
+        # Initialize pointers for the sliding window
+        left = 0
+        # Variable to store the maximum length
+        max_length = 0
+        
+        # Iterate through the string with the right pointer
+        for right in range(len(s)):
+            # If the character at 'right' is already in the set, 
+            # shrink the window from the left until it's removed
+            while s[right] in char_set:
+                char_set.remove(s[left])
+                left += 1
+            
+            # Add the current character to the set
+            char_set.add(s[right])
+            # Update the maximum length
+            max_length = max(max_length, right - left + 1)
+        
+        return max_length
