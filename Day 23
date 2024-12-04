@@ -1,0 +1,44 @@
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        def backtrack(x, y, index):
+            # If we have matched all characters in the word
+            if index == len(word):
+                return True
+
+            # Check boundaries and if the current cell matches the word[index]
+            if (
+                x < 0 or x >= len(board) or
+                y < 0 or y >= len(board[0]) or
+                board[x][y] != word[index]
+            ):
+                return False
+
+            # Mark the cell as visited by altering its value temporarily
+            temp = board[x][y]
+            board[x][y] = "#"
+
+            # Explore all four directions (up, down, left, right)
+            found = (
+                backtrack(x + 1, y, index + 1) or
+                backtrack(x - 1, y, index + 1) or
+                backtrack(x, y + 1, index + 1) or
+                backtrack(x, y - 1, index + 1)
+            )
+
+            # Restore the cell's value
+            board[x][y] = temp
+
+            return found
+
+        # Loop through each cell in the board as a potential starting point
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if backtrack(i, j, 0):
+                    return True
+
+        return False
